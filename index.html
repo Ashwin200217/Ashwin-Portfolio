@@ -1,96 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ashwin S - Cybersecurity Professional</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="theme-toggle">
-    <input type="checkbox" id="theme-switch">
-    <label for="theme-switch">🌙/☀️</label>
-  </div>
-
-  <header class="hero" data-aos="fade-down">
-    <div class="cyber-bg"></div>
-    <div class="profile-container">
-      <img src="images/profile.jpg" alt="Ashwin S" class="profile-img">
+    <div class="toggle-container">
+        <label class="switch">
+            <input type="checkbox" id="toggle">
+            <span class="slider round"></span>
+        </label>
     </div>
-    <h1>Ashwin S</h1>
-    <p class="cyber-subtitle">Threat Hunter | Security Analyst | Digital Forensics Specialist</p>
-  </header>
 
-  <nav class="cyber-nav">
-    <ul>
-      <li><a href="#about" data-aos="fade-right">About</a></li>
-      <li><a href="#experience" data-aos="fade-left">Experience</a></li>
-      <li><a href="#certifications" data-aos="fade-right">Certifications</a></li>
-      <li><a href="#skills" data-aos="fade-left">Skills</a></li>
-      <li><a href="#contact" data-aos="fade-right">Contact</a></li>
-    </ul>
-  </nav>
+    <div class="container">
+        <section id="about">
+            <h1>About Me</h1>
+            <p>Cybersecurity professional with 2 years of experience in threat detection, SIEM tools, and incident response. Passionate about securing enterprise environments and mitigating cyber risks.</p>
+            <h2>Key Competencies</h2>
+            <ul>
+                <li>Threat Hunting</li>
+                <li>Mail Analysis</li>
+                <li>Incident Response</li>
+                <li>Access Management</li>
+                <li>Security Controls</li>
+                <li>Disaster Recovery</li>
+            </ul>
+        </section>
 
-  <main>
-    <section id="about" data-aos="zoom-in">
-      <h2>About Me</h2>
-      <p>Cybersecurity professional with expertise in threat detection, incident response, and digital forensics. Specialized in SIEM tools and enterprise security strategies with 100% SLA adherence record.</p>
-    </section>
+        <section id="experience">
+            <h1>Experience</h1>
+            <h2>Ernst and Young LLP</h2>
+            <h3>Senior Analyst (October 2024 - Present)</h3>
+            <p>Monitored and responded to alerts through SIEM tools, engaging directly with clients to resolve issues with zero escalations.</p>
+            <h3>Project Consultant (October 2023 - September 2024)</h3>
+            <p>Assisted in handling complex security incidents, improving response efficiency for multiple enterprise clients.</p>
+            <h3>Cybersecurity Intern (April 2023 - October 2023)</h3>
+            <p>Monitored and responded to alerts received through SIEM tools, gaining hands-on experience with various platforms.</p>
+        </section>
 
-    <section id="experience" data-aos="fade-up">
-      <h2>Professional Experience</h2>
-      <div class="timeline">
-        <div class="timeline-item" data-aos="fade-right">
-          <h3>Ernst & Young LLP</h3>
-          <p class="role">Senior Analyst (Oct 2024 - Present)</p>
-          <ul>
-            <li>Managed security incidents for 7+ enterprise clients daily</li>
-            <li>Implemented proactive threat hunting measures</li>
-            <li>Maintained 100% SLA compliance during 12-hour shifts</li>
-          </ul>
-        </div>
-        <div class="timeline-item" data-aos="fade-left">
-          <h3>Ernst & Young LLP</h3>
-          <p class="role">Project Consultant (Oct 2023 - Sep 2024)</p>
-          <ul>
-            <li>Conducted security audits using Splunk/QRadar</li>
-            <li>Developed incident response strategies</li>
-            <li>Handled complex security investigations</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+        <section id="certifications">
+            <h1>Certifications</h1>
+            <ul>
+                <li>CompTIA Security+</li>
+                <li>EC-Council Certified Security Analyst (CSA)</li>
+                <li>SecOps Certified Network Security Practitioner (CNSP)</li>
+                <li>Google Chronicle Certification</li>
+            </ul>
+        </section>
 
-    <section id="certifications" data-aos="flip-up">
-      <h2>Certifications</h2>
-      <div class="cert-grid">
-        <div class="cert-card" data-aos="zoom-in">
-          <h3>CompTIA Security+</h3>
-          <p>Advanced threat detection & response</p>
-        </div>
-        <div class="cert-card" data-aos="zoom-in">
-          <h3>EC-Council CSA</h3>
-          <p>Certified Security Analyst</p>
-        </div>
-        <div class="cert-card" data-aos="zoom-in">
-          <h3>OSCP</h3>
-          <p>Offensive Security Certified Professional</p>
-        </div>
-      </div>
-    </section>
+        <section id="education">
+            <h1>Education</h1>
+            <p>B.Tech in Information Security and Digital Forensics, Dr M.G.R Research and Educational Institute, Year of Completion: 2019</p>
+        </section>
 
-    <section id="contact" data-aos="fade-in">
-      <h2>Contact</h2>
-      <div class="contact-info">
-        <p>📧 <a href="mailto:ashwinsri.no1@gmail.com">ashwinsri.no1@gmail.com</a></p>
-        <p>📱 +91 8778928737</p>
-        <p>📍 Chennai, India</p>
-      </div>
-    </section>
-  </main>
+        <section id="contact">
+            <h1>Contact Information</h1>
+            <p>Email: ashwinsri.no1@gmail.com</p>
+            <p>Phone: +918778928737</p>
+        </section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script src="script.js"></script>
+        <section id="photo">
+            <h1>Your Photo</h1>
+            <img src="your-photo.jpg" alt="Your Name" id="profile-photo">
+            <p>Replace "your-photo.jpg" with the path to your image file.</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
