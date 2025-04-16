@@ -3,10 +3,32 @@ body {
     margin: 0;
     padding: 0;
     transition: background-color 0.5s, color 0.5s;
+    background-image: url('images/cybersecurity-background.jpg'); /* Add your cybersecurity background image */
+    background-size: cover;
+    background-position: center;
+    color: white;
 }
 
 .container {
     padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
+    border-radius: 10px;
+    margin: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#profile-photo {
+    width: 100px; /* Adjust size as needed */
+    border-radius: 50%;
+    border: 3px solid #2196F3; /* Border color */
+}
+
+h1 {
+    color: #2196F3; /* Title color */
 }
 
 section {
@@ -18,6 +40,7 @@ section {
 
 section:hover {
     transform: scale(1.02);
+    background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
 }
 
 .toggle-container {
