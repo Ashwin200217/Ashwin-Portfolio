@@ -1,0 +1,39 @@
+:root {
+  --cyber-primary: #00ffe7;
+  --bg-dark: #0a192f;
+  --bg-light: #f8f9fa;
+}
+
+.profile-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px solid var(--cyber-primary);
+  box-shadow: 0 0 20px rgba(0,255,231,0.4);
+}
+
+.cyber-bg {
+  background: radial-gradient(circle at 75% 30%, 
+    rgba(0,255,231,0.1) 0%, 
+    transparent 50%),
+  linear-gradient(145deg, 
+    rgba(16,24,39,1) 0%, 
+    rgba(10,25,47,1) 100%);
+}
+
+.timeline-item {
+  border-left: 3px solid var(--cyber-primary);
+  padding-left: 2rem;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  background: var(--cyber-primary);
+  border-radius: 50%;
+}
