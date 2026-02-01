@@ -32,21 +32,32 @@
         <a href="#contact">Contact</a>
       </nav>
 
-      <div class="status-switch" id="statusSwitch" aria-label="Status toggle">
-  <button class="status-pill is-active" data-status="available" type="button">
-    <span class="dot"></span> Available
-  </button>
+      <!-- Status dropdown (PIN-locked edit) -->
+      <div class="status-dd locked" id="statusDD">
+        <button class="status-btn" id="statusBtn" type="button" aria-haspopup="true" aria-expanded="false">
+          <span class="dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Available</span>
+          <span class="chev">▾</span>
+        </button>
 
-  <button class="status-pill" data-status="looking" type="button">
-    <span class="dot"></span> Looking
-  </button>
+        <div class="status-menu" id="statusMenu" role="menu" aria-label="Set status">
+          <button class="status-item" data-status="available" role="menuitem" type="button">
+            <span class="dot"></span> Available
+          </button>
+          <button class="status-item" data-status="looking" role="menuitem" type="button">
+            <span class="dot"></span> Currently looking
+          </button>
+          <button class="status-item" data-status="working" role="menuitem" type="button">
+            <span class="dot"></span> Currently working
+          </button>
 
-  <button class="status-pill" data-status="working" type="button">
-    <span class="dot"></span> Working
-  </button>
-</div>
+          <div class="status-sep"></div>
 
-
+          <button class="status-item status-lock" id="unlockStatus" role="menuitem" type="button">
+            🔒 Unlock to edit
+          </button>
+        </div>
+      </div>
     </header>
 
     <!-- HERO -->
@@ -83,12 +94,11 @@
             </div>
           </div>
 
+          <!-- Portrait box -->
           <div class="portrait">
             <div class="portrait-card">
-              <!-- Glitch wrapper uses CSS variable set by JS -->
               <div class="pfp glitch" id="glitchPfp">
-                <!-- Try Profile.jpg first; JS will fallback to profile.jpg if needed -->
-                <img id="profileImg" src="images/profile.jpg" alt="Ashwin profile photo" />
+                <img id="profileImg" src="images/Profile.jpg" alt="Ashwin profile photo" />
                 <span class="glitch-scan"></span>
               </div>
             </div>
@@ -98,7 +108,7 @@
       </div>
     </section>
 
-    <!-- FEATURED PROJECT -->
+    <!-- PROJECTS -->
     <section class="frame" id="projects">
       <div class="frame-inner">
         <div class="section-title">Featured Project:</div>
@@ -143,7 +153,7 @@
       </div>
     </section>
 
-    <!-- CERTIFICATIONS -->
+    <!-- CERTS -->
     <section class="frame" id="certs">
       <div class="frame-inner">
         <div class="section-title">Certifications:</div>
