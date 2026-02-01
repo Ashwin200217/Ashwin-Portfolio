@@ -14,6 +14,7 @@
 
 *{box-sizing:border-box}
 html,body{height:100%}
+
 body{
   margin:0;
   font-family:var(--mono);
@@ -26,21 +27,24 @@ body{
 
 /* overlays */
 .scanlines{
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
   pointer-events:none;
   background: repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,.03) 0px,
-      rgba(255,255,255,.03) 1px,
-      transparent 1px,
-      transparent 3px
-    );
+    to bottom,
+    rgba(255,255,255,.03) 0px,
+    rgba(255,255,255,.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
   opacity:.20;
   mix-blend-mode:overlay;
   z-index:1;
 }
+
 .vignette{
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
   pointer-events:none;
   background: radial-gradient(circle at 50% 10%, rgba(0,0,0,0), rgba(0,0,0,.55) 70%);
   z-index:1;
@@ -67,6 +71,7 @@ body{
   box-shadow:var(--shadow);
   backdrop-filter: blur(8px);
 }
+
 .prompt{
   color:var(--accent);
   font-weight:700;
@@ -75,7 +80,9 @@ body{
   overflow:hidden;
   text-overflow:ellipsis;
 }
+
 .prompt .caret{color:var(--accent2)}
+
 nav{
   display:flex;
   align-items:center;
@@ -83,6 +90,7 @@ nav{
   flex-wrap:wrap;
   justify-content:center;
 }
+
 nav a{
   color:var(--muted);
   text-decoration:none;
@@ -92,11 +100,13 @@ nav a{
   font-weight:600;
   font-size:13px;
 }
+
 nav a:hover{
   border-color:var(--border2);
   background:rgba(37,255,122,.06);
   color:var(--accent2);
 }
+
 .status{
   display:flex;
   align-items:center;
@@ -105,10 +115,13 @@ nav a:hover{
   font-size:13px;
   white-space:nowrap;
 }
+
 .dot{
-  width:10px;height:10px;border-radius:50%;
+  width:10px;
+  height:10px;
+  border-radius:50%;
   background:var(--accent);
-  box-shadow: 0 0 14px rgba(37,255,122,.75);
+  box-shadow:0 0 14px rgba(37,255,122,.75);
 }
 
 /* frame */
@@ -120,6 +133,7 @@ nav a:hover{
   box-shadow:var(--shadow);
   overflow:hidden;
 }
+
 .frame-inner{
   padding:22px;
   border:1px solid var(--border);
@@ -127,9 +141,11 @@ nav a:hover{
   border-radius:16px;
   position:relative;
 }
+
 .frame-inner:before{
   content:"";
-  position:absolute; inset:-1px;
+  position:absolute;
+  inset:-1px;
   border-radius:16px;
   background: radial-gradient(circle at 20% 0%, rgba(37,255,122,.10), transparent 55%);
   pointer-events:none;
@@ -145,12 +161,14 @@ nav a:hover{
   position:relative;
   z-index:2;
 }
+
 .ascii-box{
   border:1px solid var(--border);
   border-radius:14px;
   padding:18px;
   background:rgba(11,15,12,.60);
 }
+
 .ascii{
   margin:0;
   color:var(--accent);
@@ -160,22 +178,26 @@ nav a:hover{
   font-size:14px;
   white-space:pre;
 }
+
 .subtitle{
   margin-top:10px;
   color:var(--muted);
   font-size:13px;
 }
+
 .info{
   margin-top:18px;
   color:var(--muted);
   font-size:14px;
 }
+
 .info h3{
   margin:0 0 10px;
   color:var(--accent2);
   font-size:14px;
   letter-spacing:.4px;
 }
+
 .info-grid{
   display:grid;
   grid-template-columns: 130px 1fr;
@@ -185,8 +207,10 @@ nav a:hover{
   border-radius:14px;
   background:rgba(6,11,8,.45);
 }
+
 .k{color:var(--dim)}
 .v{color:var(--text)}
+
 .about-text{
   margin-top:16px;
   color:var(--muted);
@@ -199,6 +223,7 @@ nav a:hover{
   display:flex;
   justify-content:center;
 }
+
 .portrait-card{
   width:min(290px, 100%);
   border:1px solid var(--border);
@@ -207,8 +232,10 @@ nav a:hover{
   padding:16px;
   text-align:center;
 }
+
 .pfp{
-  width:200px;height:240px;
+  width:200px;
+  height:240px;
   margin:0 auto;
   border-radius:12px;
   border:1px solid var(--border2);
@@ -219,23 +246,41 @@ nav a:hover{
   position:relative;
 }
 
-/* ==== GLITCH EFFECT ==== */
+/* ==== CONTROLLED TERMINAL GLITCH (CLIfolio-style) ==== */
 /* JS sets: --glitch-img: url("...") */
 .glitch{
   --glitch-img: url("images/profile.jpg");
+  position:relative;
+  overflow:hidden;
 }
 
+/* Base image – clean & readable */
 .glitch img{
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
-  filter: contrast(120%) brightness(110%);
-  transform: translateZ(0);
+  filter: grayscale(35%) contrast(115%) brightness(105%);
+  z-index:1;
 }
 
-/* Two RGB layers */
-.glitch::before,
+/* Cyan halftone overlay */
+.glitch::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    radial-gradient(circle, rgba(0,255,180,.35) 1px, transparent 1.6px),
+    var(--glitch-img);
+  background-size: 3px 3px, cover;
+  background-position: center;
+  mix-blend-mode: screen;
+  opacity:.55;
+  z-index:2;
+  pointer-events:none;
+}
+
+/* RGB split layer (OFF by default) */
 .glitch::after{
   content:"";
   position:absolute;
@@ -243,75 +288,54 @@ nav a:hover{
   background-image: var(--glitch-img);
   background-size: cover;
   background-position: center;
-  pointer-events:none;
+  mix-blend-mode: screen;
   opacity:0;
+  z-index:3;
+  pointer-events:none;
 }
 
-/* Cyan / green layer */
-.glitch::before{
-  mix-blend-mode: screen;
-  filter: hue-rotate(120deg) saturate(160%);
-  animation: glitchA 3.2s infinite steps(1, end);
-}
-
-/* Magenta-ish layer */
-.glitch::after{
-  mix-blend-mode: screen;
-  filter: hue-rotate(260deg) saturate(170%);
-  animation: glitchB 4.1s infinite steps(1, end);
-}
-
-/* Scan streak inside photo */
+/* Scanline sweep inside photo */
 .glitch-scan{
   position:absolute;
   inset:-60% 0;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(37,255,122,0) 0px,
-    rgba(37,255,122,0) 7px,
-    rgba(37,255,122,.14) 8px,
-    rgba(37,255,122,0) 10px
+    rgba(0,255,180,0) 0px,
+    rgba(0,255,180,0) 7px,
+    rgba(0,255,180,.18) 8px,
+    rgba(0,255,180,0) 10px
   );
   opacity:.25;
   mix-blend-mode: overlay;
-  animation: scanMove 2.2s linear infinite;
+  animation: scanMove 3.2s linear infinite;
+  z-index:4;
   pointer-events:none;
 }
 
-/* Hover: extra jitter for “alive” feel */
-.glitch:hover img{
-  animation: microJitter .35s infinite linear;
+/* Short glitch burst (JS toggles class) */
+.glitch.glitch-active::after{
+  opacity:.9;
+  animation: rgbSplit .22s steps(1,end) 2;
 }
 
-/* Keyframes: occasional slice + offsets */
-@keyframes glitchA{
-  0%, 82%, 100% { clip-path: inset(0 0 0 0); transform: translate(0,0); opacity:0; }
-  83% { clip-path: inset(12% 0 62% 0); transform: translate(-7px,-2px); opacity:.85; }
-  85% { clip-path: inset(44% 0 25% 0); transform: translate(9px, 1px); }
-  87% { clip-path: inset(0 0 0 0); transform: translate(0,0); opacity:0; }
-  93% { clip-path: inset(20% 0 48% 0); transform: translate(-11px, 2px); opacity:.8; }
-  95% { clip-path: inset(62% 0 12% 0); transform: translate(11px,-1px); }
+/* Hover = extra glitch */
+.glitch:hover::after{
+  opacity:1;
+  animation: rgbSplit .18s steps(1,end) infinite;
 }
 
-@keyframes glitchB{
-  0%, 78%, 100% { clip-path: inset(0 0 0 0); transform: translate(0,0); opacity:0; }
-  79% { clip-path: inset(55% 0 18% 0); transform: translate(10px, 0); opacity:.75; }
-  81% { clip-path: inset(10% 0 70% 0); transform: translate(-9px, -1px); }
-  83% { clip-path: inset(0 0 0 0); transform: translate(0,0); opacity:0; }
-  91% { clip-path: inset(30% 0 35% 0); transform: translate(7px, 2px); opacity:.7; }
+/* Animations */
+@keyframes rgbSplit{
+  0%   { transform: translate(0,0); filter: hue-rotate(0deg); }
+  25%  { transform: translate(-2px,1px); filter: hue-rotate(90deg); }
+  50%  { transform: translate(2px,-1px); filter: hue-rotate(180deg); }
+  75%  { transform: translate(-1px,2px); filter: hue-rotate(270deg); }
+  100% { transform: translate(0,0); filter: hue-rotate(360deg); }
 }
 
 @keyframes scanMove{
-  0% { transform: translateY(0); }
+  0%   { transform: translateY(0); }
   100% { transform: translateY(50%); }
-}
-
-@keyframes microJitter{
-  0% { transform: translate(0,0); }
-  25% { transform: translate(-1px, 0); }
-  50% { transform: translate(1px, 1px); }
-  75% { transform: translate(0, -1px); }
-  100% { transform: translate(0,0); }
 }
 
 /* Featured project */
@@ -321,18 +345,21 @@ nav a:hover{
   margin:0 0 12px;
   letter-spacing:.4px;
 }
+
 .featured{
   display:grid;
   grid-template-columns: 1.1fr .9fr;
   gap:18px;
   align-items:stretch;
 }
+
 .featured-left{
   border:1px solid var(--border2);
   border-radius:16px;
   padding:18px;
   background:rgba(6,11,8,.45);
 }
+
 .badge{
   display:inline-block;
   padding:4px 8px;
@@ -344,6 +371,7 @@ nav a:hover{
   margin-right:8px;
   font-weight:700;
 }
+
 .proj-name{
   margin:10px 0 8px;
   color:var(--accent);
@@ -351,17 +379,20 @@ nav a:hover{
   font-weight:800;
   letter-spacing:.2px;
 }
+
 .proj-desc{
   color:var(--muted);
   font-size:13px;
   line-height:1.55;
   margin:0;
 }
+
 .kpis{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:12px;
 }
+
 .kpi{
   border:1px solid var(--border2);
   border-radius:16px;
@@ -369,11 +400,13 @@ nav a:hover{
   padding:18px;
   text-align:center;
 }
+
 .kpi .num{
   font-size:18px;
   color:var(--accent2);
   font-weight:800;
 }
+
 .kpi .label{
   margin-top:8px;
   color:var(--dim);
@@ -381,7 +414,7 @@ nav a:hover{
   letter-spacing:.3px;
 }
 
-/* list blocks */
+/* list blocks (certs/contact) */
 .list{
   border:1px solid var(--border2);
   border-radius:16px;
@@ -391,6 +424,7 @@ nav a:hover{
   font-size:13px;
   line-height:1.8;
 }
+
 .list strong{color:var(--text)}
 
 a.inline{
@@ -398,6 +432,7 @@ a.inline{
   text-decoration:none;
   border-bottom:1px dotted rgba(95,255,209,.55);
 }
+
 a.inline:hover{border-bottom-style:solid}
 
 /* Footer */
@@ -414,6 +449,7 @@ footer{
   color:var(--dim);
   font-size:12px;
 }
+
 .ver{
   color:var(--accent);
   font-weight:800;
