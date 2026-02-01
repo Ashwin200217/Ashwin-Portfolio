@@ -70,6 +70,8 @@ body{
   background:rgba(11,18,13,.75);
   box-shadow:var(--shadow);
   backdrop-filter: blur(8px);
+  position:relative;
+  z-index:10; /* keep above frames */
 }
 
 .prompt{
@@ -125,7 +127,7 @@ nav a:hover{
   background:rgba(6,11,8,.35);
   color:var(--accent2);
   font-family:var(--mono);
-  font-weight:700;
+  font-weight:800;
   font-size:12px;
   cursor:pointer;
   user-select:none;
@@ -145,19 +147,19 @@ nav a:hover{
 .status-text{ color:var(--accent2); }
 .chev{ color:var(--muted); font-weight:900; }
 
-/* menu */
+/* menu — FIXED VISIBILITY + Z-INDEX */
 .status-menu{
   position:absolute;
   top:calc(100% + 10px);
   right:0;
-  width:220px;
+  width:240px;
   border-radius:14px;
-  border:1px solid var(--border2);
-  background:rgba(11,18,13,.92);
-  box-shadow:var(--shadow);
+  border:1px solid rgba(37,255,122,.28);
+  background:rgba(6,11,8,.96);              /* darker = readable */
+  box-shadow: 0 18px 45px rgba(0,0,0,.70);  /* stronger shadow */
   padding:8px;
   display:none;
-  z-index:50;
+  z-index:9999;                              /* above everything */
   backdrop-filter: blur(10px);
 }
 
@@ -170,20 +172,20 @@ nav a:hover{
   gap:10px;
   padding:10px 10px;
   border-radius:12px;
-  border:1px solid transparent;
-  background:transparent;
-  color:var(--muted);
+  border:1px solid rgba(37,255,122,.12);
+  background:rgba(11,18,13,.55);           /* visible option card */
+  color: var(--text);                      /* bright text */
   font-family:var(--mono);
-  font-weight:700;
+  font-weight:800;
   font-size:12px;
   cursor:pointer;
   text-align:left;
 }
 
 .status-item:hover{
-  border-color:var(--border2);
-  background:rgba(37,255,122,.06);
-  color:var(--accent2);
+  border-color: rgba(37,255,122,.35);
+  background: rgba(37,255,122,.10);
+  color: var(--accent2);
 }
 
 .status-item .dot{
@@ -208,8 +210,15 @@ nav a:hover{
   margin:8px 6px;
 }
 
+/* unlock row readable */
 .status-lock{
-  color:rgba(215,255,226,.75);
+  background: rgba(6,11,8,.45);
+  color: rgba(215,255,226,.85);
+  border-color: rgba(37,255,122,.10);
+}
+.status-lock:hover{
+  background: rgba(37,255,122,.10);
+  color: var(--accent2);
 }
 
 /* locked mode hint */
