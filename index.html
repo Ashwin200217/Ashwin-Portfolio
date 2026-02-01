@@ -32,9 +32,20 @@
         <a href="#contact">Contact</a>
       </nav>
 
-      <<div class="status">
-  <span class="dot"></span> Available
+      <div class="status-switch" id="statusSwitch" aria-label="Status toggle">
+  <button class="status-pill is-active" data-status="available" type="button">
+    <span class="dot"></span> Available
+  </button>
+
+  <button class="status-pill" data-status="looking" type="button">
+    <span class="dot"></span> Looking
+  </button>
+
+  <button class="status-pill" data-status="working" type="button">
+    <span class="dot"></span> Working
+  </button>
 </div>
+
 
     </header>
 
