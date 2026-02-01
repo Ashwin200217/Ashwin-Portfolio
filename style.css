@@ -107,41 +107,23 @@ nav a:hover{
   color:var(--accent2);
 }
 
-.status{
+/* ===== Status dropdown (locked by default) ===== */
+.status-dd{
+  position:relative;
   display:flex;
   align-items:center;
-  gap:8px;
-  color:var(--accent2);
-  font-size:13px;
-  white-space:nowrap;
-}
-
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 0 14px rgba(37,255,122,.75);
-}
-
-/* ===== Status Toggle (top-right) ===== */
-.status-switch{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
   justify-content:flex-end;
 }
 
-.status-pill{
+.status-btn{
   display:inline-flex;
   align-items:center;
   gap:8px;
-  padding:8px 10px;
+  padding:9px 12px;
   border-radius:12px;
   border:1px solid var(--border2);
   background:rgba(6,11,8,.35);
-  color:var(--muted);
+  color:var(--accent2);
   font-family:var(--mono);
   font-weight:700;
   font-size:12px;
@@ -149,52 +131,94 @@ nav a:hover{
   user-select:none;
 }
 
-.status-pill:hover{
+.status-btn:hover{
   border-color:var(--border);
   background:rgba(37,255,122,.06);
-  color:var(--accent2);
 }
 
-/* Active state */
-.status-pill.is-active{
-  border-color:var(--border);
-  background:rgba(37,255,122,.10);
-  color:var(--accent2);
-  box-shadow: 0 0 18px rgba(37,255,122,.15);
-}
-
-/* Dot colors by status (controlled via data-status) */
-.status-pill .dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
+.status-btn .dot{
+  width:10px;height:10px;border-radius:50%;
   background:var(--accent);
   box-shadow:0 0 14px rgba(37,255,122,.75);
 }
 
-/* Looking = cyan */
-.status-pill[data-status="looking"] .dot{
-  background: var(--accent2);
-  box-shadow: 0 0 14px rgba(95,255,209,.65);
+.status-text{ color:var(--accent2); }
+.chev{ color:var(--muted); font-weight:900; }
+
+/* menu */
+.status-menu{
+  position:absolute;
+  top:calc(100% + 10px);
+  right:0;
+  width:220px;
+  border-radius:14px;
+  border:1px solid var(--border2);
+  background:rgba(11,18,13,.92);
+  box-shadow:var(--shadow);
+  padding:8px;
+  display:none;
+  z-index:50;
+  backdrop-filter: blur(10px);
 }
 
-/* Working = muted green (calmer) */
-.status-pill[data-status="working"] .dot{
-  background: rgba(127,234,163,.9);
-  box-shadow: 0 0 14px rgba(127,234,163,.35);
+.status-menu.open{ display:block; }
+
+.status-item{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 10px;
+  border-radius:12px;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  font-family:var(--mono);
+  font-weight:700;
+  font-size:12px;
+  cursor:pointer;
+  text-align:left;
 }
 
-/* Mobile: keep it tidy */
-@media (max-width: 980px){
-  .status-switch{
-    gap:6px;
-  }
-  .status-pill{
-    padding:7px 9px;
-    font-size:12px;
-  }
+.status-item:hover{
+  border-color:var(--border2);
+  background:rgba(37,255,122,.06);
+  color:var(--accent2);
 }
 
+.status-item .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px rgba(37,255,122,.55);
+}
+
+/* Dot colors */
+.status-item[data-status="looking"] .dot{
+  background:var(--accent2);
+  box-shadow:0 0 12px rgba(95,255,209,.55);
+}
+.status-item[data-status="working"] .dot{
+  background:rgba(127,234,163,.9);
+  box-shadow:0 0 12px rgba(127,234,163,.35);
+}
+
+.status-sep{
+  height:1px;
+  background:rgba(37,255,122,.15);
+  margin:8px 6px;
+}
+
+.status-lock{
+  color:rgba(215,255,226,.75);
+}
+
+/* locked mode hint */
+.status-dd.locked .status-btn{
+  color:rgba(215,255,226,.75);
+}
+.status-dd.locked .status-text{
+  color:rgba(215,255,226,.75);
+}
 
 /* frame */
 .frame{
@@ -290,19 +314,19 @@ nav a:hover{
   line-height:1.65;
 }
 
-/* portrait */
+/* portrait - fills the box */
 .portrait{
   display:flex;
-  justify-content:flex-end; /* keeps it aligned to the right like reference */
+  justify-content:flex-end;
 }
 
 .portrait-card{
-  width: min(420px, 100%);
-  height: 320px;                 /* controls the box height */
+  width:min(420px, 100%);
+  height:320px;
   border:1px solid var(--border);
   border-radius:16px;
   background:rgba(6,11,8,.45);
-  padding:16px;                  /* this is the outer frame padding */
+  padding:16px;
 }
 
 .pfp{
@@ -312,23 +336,18 @@ nav a:hover{
   border:1px solid var(--border2);
   overflow:hidden;
   position:relative;
-
-  /* background glow like the rest of the theme */
   background:
     radial-gradient(circle at 35% 20%, rgba(37,255,122,.18), transparent 45%),
     rgba(11,18,13,.65);
 }
 
-
-/* ==== CONTROLLED TERMINAL GLITCH (CLIfolio-style) ==== */
-/* JS sets: --glitch-img: url("...") */
+/* ==== CONTROLLED TERMINAL PROFILE EFFECT ==== */
 .glitch{
   --glitch-img: url("images/profile.jpg");
   position:relative;
   overflow:hidden;
 }
 
-/* Base image – clean & readable */
 .glitch img{
   width:100%;
   height:100%;
@@ -338,7 +357,7 @@ nav a:hover{
   z-index:1;
 }
 
-/* Cyan halftone overlay */
+/* cyan halftone overlay */
 .glitch::before{
   content:"";
   position:absolute;
@@ -354,7 +373,7 @@ nav a:hover{
   pointer-events:none;
 }
 
-/* RGB split layer (OFF by default) */
+/* RGB split (off by default) */
 .glitch::after{
   content:"";
   position:absolute;
@@ -368,7 +387,7 @@ nav a:hover{
   pointer-events:none;
 }
 
-/* Scanline sweep inside photo */
+/* scanline sweep inside photo */
 .glitch-scan{
   position:absolute;
   inset:-60% 0;
@@ -386,19 +405,18 @@ nav a:hover{
   pointer-events:none;
 }
 
-/* Short glitch burst (JS toggles class) */
+/* short burst (JS toggles .glitch-active) */
 .glitch.glitch-active::after{
   opacity:.9;
   animation: rgbSplit .22s steps(1,end) 2;
 }
 
-/* Hover = extra glitch */
+/* hover: more glitch */
 .glitch:hover::after{
   opacity:1;
   animation: rgbSplit .18s steps(1,end) infinite;
 }
 
-/* Animations */
 @keyframes rgbSplit{
   0%   { transform: translate(0,0); filter: hue-rotate(0deg); }
   25%  { transform: translate(-2px,1px); filter: hue-rotate(90deg); }
@@ -488,7 +506,7 @@ nav a:hover{
   letter-spacing:.3px;
 }
 
-/* list blocks (certs/contact) */
+/* list blocks */
 .list{
   border:1px solid var(--border2);
   border-radius:16px;
