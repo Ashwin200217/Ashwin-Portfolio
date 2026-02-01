@@ -221,30 +221,32 @@ nav a:hover{
 /* portrait */
 .portrait{
   display:flex;
-  justify-content:center;
+  justify-content:flex-end; /* keeps it aligned to the right like reference */
 }
 
 .portrait-card{
-  width:min(290px, 100%);
+  width: min(420px, 100%);
+  height: 320px;                 /* controls the box height */
   border:1px solid var(--border);
   border-radius:16px;
   background:rgba(6,11,8,.45);
-  padding:16px;
-  text-align:center;
+  padding:16px;                  /* this is the outer frame padding */
 }
 
 .pfp{
-  width:200px;
-  height:240px;
-  margin:0 auto;
+  width:100%;
+  height:100%;
   border-radius:12px;
   border:1px solid var(--border2);
+  overflow:hidden;
+  position:relative;
+
+  /* background glow like the rest of the theme */
   background:
     radial-gradient(circle at 35% 20%, rgba(37,255,122,.18), transparent 45%),
     rgba(11,18,13,.65);
-  overflow:hidden;
-  position:relative;
 }
+
 
 /* ==== CONTROLLED TERMINAL GLITCH (CLIfolio-style) ==== */
 /* JS sets: --glitch-img: url("...") */
