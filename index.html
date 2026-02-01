@@ -3,522 +3,620 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b0f0c" />
-  <title>Ashwin — Cybersecurity CLI Portfolio</title>
+  <meta name="theme-color" content="#060b08" />
+  <title>Ashwin — Cybersecurity Portfolio (CLI Theme)</title>
+
+  <!-- Optional: JetBrains Mono (good terminal font) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#070b08;
+      --bg:#060b08;
       --panel:#0b120d;
-      --text:#c8f7d2;
-      --muted:#7bdc95;
-      --dim:#4db56c;
-      --accent:#39ff88;
+      --panel2:#0b0f0c;
+      --text:#d7ffe2;
+      --muted:#7feaa3;
+      --dim:#49b36c;
+      --accent:#25ff7a;
+      --accent2:#5fffd1;
       --warn:#ffcf5a;
-      --danger:#ff5a7a;
-      --link:#7ee0ff;
-      --border:rgba(57,255,136,.22);
-      --shadow: 0 10px 30px rgba(0,0,0,.55);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background: radial-gradient(1200px 700px at 20% 0%, rgba(57,255,136,.10), transparent 55%),
-                  radial-gradient(900px 600px at 90% 20%, rgba(126,224,255,.08), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      font-family:var(--mono);
-      line-height:1.45;
-      min-height:100vh;
-      display:flex;
-      align-items:stretch;
-      justify-content:center;
-      padding:18px;
-    }
-    .wrap{
-      width:min(1100px, 100%);
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 12px;
-      border:1px solid var(--border);
-      background: rgba(11,18,13,.72);
-      box-shadow: var(--shadow);
-      border-radius:14px;
-      backdrop-filter: blur(8px);
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .dots{
-      display:flex; gap:6px;
-    }
-    .dot{width:10px;height:10px;border-radius:50%}
-    .dot.r{background:#ff5f57}
-    .dot.y{background:#febc2e}
-    .dot.g{background:#28c840}
-    .title{
-      font-weight:700;
-      color:var(--accent);
-    }
-    .meta{
-      color:var(--dim);
-      font-size:12px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .pill{
-      border:1px solid var(--border);
-      padding:4px 8px;
-      border-radius:999px;
-      background: rgba(57,255,136,.06);
+      --border:rgba(37,255,122,.35);
+      --border2:rgba(37,255,122,.18);
+      --shadow:0 18px 45px rgba(0,0,0,.55);
+      --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --radius:18px;
     }
 
-    .terminal{
-      border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(11,18,13,.82), rgba(7,11,8,.92));
-      box-shadow: var(--shadow);
-      border-radius:14px;
-      overflow:hidden;
-      position:relative;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--mono);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 0%, rgba(37,255,122,.12), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(95,255,209,.09), transparent 55%),
+        var(--bg);
     }
-    /* scanline / noise vibe */
-    .terminal::before{
-      content:"";
-      position:absolute; inset:0;
+
+    /* subtle scanlines */
+    .scanlines{
+      position:fixed; inset:0;
+      pointer-events:none;
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,.03),
+          rgba(255,255,255,.03) 0px,
           rgba(255,255,255,.03) 1px,
           transparent 1px,
           transparent 3px
         );
-      mix-blend-mode: overlay;
       opacity:.20;
-      pointer-events:none;
+      mix-blend-mode:overlay;
+      z-index:1;
     }
-    .terminal::after{
-      content:"";
-      position:absolute; inset:0;
-      background: radial-gradient(circle at 50% 0%, rgba(57,255,136,.14), transparent 55%);
-      opacity:.55;
+    /* vignette */
+    .vignette{
+      position:fixed; inset:0;
       pointer-events:none;
+      background: radial-gradient(circle at 50% 10%, rgba(0,0,0,0), rgba(0,0,0,.55) 70%);
+      z-index:1;
     }
 
-    .screen{
+    .container{
       position:relative;
-      padding:18px 16px 14px;
-      min-height: 70vh;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+      z-index:2;
+      width:min(1200px, 100%);
+      margin:0 auto;
+      padding:16px 16px 28px;
     }
 
-    .banner{
-      color:var(--accent);
-      white-space:pre;
-      font-size:12px;
-      line-height:1.15;
-      margin:0;
-      opacity:.95;
-    }
-
-    .output{
-      font-size:14px;
-      color:var(--text);
-      padding-bottom:8px;
-    }
-    .output .dim{color:var(--dim)}
-    .output .muted{color:var(--muted)}
-    .output .warn{color:var(--warn)}
-    .output .danger{color:var(--danger)}
-    .output a{color:var(--link); text-decoration:none; border-bottom:1px dotted rgba(126,224,255,.5)}
-    .output a:hover{border-bottom-style:solid}
-
-    .promptrow{
+    /* Top bar */
+    .topbar{
       display:flex;
       align-items:center;
-      gap:10px;
-      padding-top:6px;
-      border-top:1px dashed rgba(57,255,136,.18);
-      margin-top:auto;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 16px;
+      border:1px solid var(--border2);
+      border-radius:16px;
+      background:rgba(11,18,13,.75);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px);
     }
     .prompt{
-      color:var(--muted);
+      color:var(--accent);
+      font-weight:700;
+      letter-spacing:.2px;
       white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .cmd{
-      flex:1;
+    .prompt .caret{color:var(--accent2)}
+    nav{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:14px;
+      flex-wrap:wrap;
+      justify-content:center;
     }
-    input{
-      width:100%;
-      border:none;
-      outline:none;
-      background:transparent;
-      color:var(--text);
-      font-family:var(--mono);
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border:1px solid transparent;
+      border-radius:12px;
+      font-weight:600;
+      font-size:13px;
+    }
+    nav a:hover{
+      border-color:var(--border2);
+      background:rgba(37,255,122,.06);
+      color:var(--accent2);
+    }
+    .status{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--accent2);
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--accent);
+      box-shadow: 0 0 14px rgba(37,255,122,.75);
+    }
+
+    /* Section framing like in screenshot */
+    .frame{
+      margin-top:16px;
+      border:1px solid var(--border2);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(11,18,13,.62), rgba(6,11,8,.80));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .frame-inner{
+      padding:22px;
+      border:1px solid var(--border);
+      margin:16px;
+      border-radius:16px;
+      position:relative;
+    }
+    .frame-inner:before{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius:16px;
+      background: radial-gradient(circle at 20% 0%, rgba(37,255,122,.10), transparent 55%);
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:22px;
+      align-items:start;
+      position:relative;
+      z-index:2;
+    }
+    .ascii-box{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px;
+      background:rgba(11,15,12,.60);
+    }
+    .ascii{
+      margin:0;
+      color:var(--accent);
+      font-weight:700;
+      letter-spacing:.5px;
+      line-height:1.05;
       font-size:14px;
-      caret-color: var(--accent);
+      white-space:pre;
     }
-    .hint{
+    .subtitle{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .info{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .info h3{
+      margin:0 0 10px;
+      color:var(--accent2);
+      font-size:14px;
+      letter-spacing:.4px;
+    }
+    .info-grid{
+      display:grid;
+      grid-template-columns: 130px 1fr;
+      gap:8px 14px;
+      padding:14px;
+      border:1px solid var(--border2);
+      border-radius:14px;
+      background:rgba(6,11,8,.45);
+    }
+    .k{color:var(--dim)}
+    .v{color:var(--text)}
+
+    .portrait{
+      display:flex;
+      justify-content:center;
+    }
+    .portrait-card{
+      width:min(290px, 100%);
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:rgba(6,11,8,.45);
+      padding:16px;
+      text-align:center;
+    }
+    .pfp{
+      width:200px;height:240px;
+      margin:0 auto 12px;
+      border-radius:12px;
+      border:1px solid var(--border2);
+      background:
+        radial-gradient(circle at 35% 20%, rgba(37,255,122,.18), transparent 45%),
+        rgba(11,18,13,.65);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .pfp img{
+      width:100%; height:100%;
+      object-fit:cover;
+      filter: grayscale(100%) contrast(115%) brightness(110%);
+      opacity:.9;
+    }
+    .portrait-card .small{
       color:var(--dim);
       font-size:12px;
     }
 
-    .kbd{
-      border:1px solid rgba(57,255,136,.25);
-      padding:2px 6px;
-      border-radius:6px;
-      background: rgba(57,255,136,.06);
+    /* Featured Project section */
+    .section-title{
+      color:var(--accent2);
+      font-size:14px;
+      margin:0 0 12px;
+      letter-spacing:.4px;
+    }
+    .featured{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .featured-left{
+      border:1px solid var(--border2);
+      border-radius:16px;
+      padding:18px;
+      background:rgba(6,11,8,.45);
+    }
+    .badge{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:10px;
+      border:1px solid var(--border2);
+      background:rgba(37,255,122,.06);
       color:var(--muted);
       font-size:12px;
+      margin-right:8px;
+    }
+    .proj-name{
+      margin:10px 0 8px;
+      color:var(--accent);
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .proj-desc{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+      margin:0 0 14px;
+    }
+    .btn-row{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      color:var(--bg);
+      background:linear-gradient(90deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 30px rgba(37,255,122,.18);
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--muted);
+      border-color:var(--border2);
+      box-shadow:none;
+    }
+    .btn.secondary:hover{
+      background:rgba(37,255,122,.06);
+      color:var(--accent2);
     }
 
-    @media (max-width: 700px){
-      .meta{justify-content:flex-start}
-      .banner{font-size:10px}
-      .screen{min-height: 74vh}
+    .kpis{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .kpi{
+      border:1px solid var(--border2);
+      border-radius:16px;
+      background:rgba(6,11,8,.45);
+      padding:18px;
+      text-align:center;
+    }
+    .kpi .num{
+      font-size:20px;
+      color:var(--accent2);
+      font-weight:800;
+    }
+    .kpi .label{
+      margin-top:8px;
+      color:var(--dim);
+      font-size:12px;
+      letter-spacing:.3px;
+    }
+
+    /* Blog cards */
+    .blog-head{
+      padding:0 22px 8px;
+    }
+    .blog-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      padding:0 22px 22px;
+    }
+    .card{
+      border:1px solid var(--border2);
+      border-radius:16px;
+      background:rgba(6,11,8,.45);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:260px;
+    }
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color:var(--dim);
+      font-size:12px;
+    }
+    .tag{
+      padding:4px 8px;
+      border-radius:10px;
+      border:1px solid var(--border2);
+      background:rgba(37,255,122,.06);
+      color:var(--muted);
+      font-weight:700;
+    }
+    .card h4{
+      margin:6px 0 2px;
+      color:var(--accent);
+      font-size:16px;
+    }
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.6;
+      flex:1;
+    }
+    .card a{
+      margin-top:10px;
+      display:inline-flex;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      color:var(--accent2);
+      text-decoration:none;
+      font-weight:800;
+      font-size:12.5px;
+      background:rgba(37,255,122,.06);
+    }
+    .card a:hover{
+      background:rgba(37,255,122,.10);
+    }
+
+    /* Footer strip */
+    footer{
+      margin-top:16px;
+      border:1px solid var(--border2);
+      border-radius:16px;
+      background:rgba(11,18,13,.75);
+      padding:12px 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color:var(--dim);
+      font-size:12px;
+    }
+    .ver{
+      color:var(--accent);
+      font-weight:800;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      .featured{grid-template-columns:1fr}
+      .portrait-card{max-width:520px; margin:0 auto}
+      .blog-grid{grid-template-columns:1fr}
+      nav{display:none} /* keep it clean on small screens */
     }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="dots" aria-hidden="true">
-          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <div class="container">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="prompt">
+        <span class="caret">&gt;_</span> ashwin@portfolio:~$
+      </div>
+
+      <nav aria-label="primary">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="status">
+        <span class="dot"></span> Available
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="frame" id="about">
+      <div class="frame-inner">
+        <div class="hero">
+          <div>
+            <div class="ascii-box">
+<pre class="ascii">
+ █████╗ ███████╗██╗  ██╗██╗    ██╗██╗███╗   ██╗
+██╔══██╗██╔════╝██║  ██║██║    ██║██║████╗  ██║
+███████║███████╗███████║██║ █╗ ██║██║██╔██╗ ██║
+██╔══██║╚════██║██╔══██║██║███╗██║██║██║╚██╗██║
+██║  ██║███████║██║  ██║╚███╔███╔╝██║██║ ╚████║
+╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝
+</pre>
+              <div class="subtitle">Cyber Security Analyst • SOC • MSc (UK)</div>
+            </div>
+
+            <div class="info">
+              <h3>Portfolio Information:</h3>
+              <div class="info-grid">
+                <div class="k">Name:</div><div class="v">Ashwin</div>
+                <div class="k">Based in:</div><div class="v">Cambridge, UK</div>
+                <div class="k">Profession:</div><div class="v">Cyber Security Analyst (SOC)</div>
+                <div class="k">Availability:</div><div class="v">Open to internships / grad roles</div>
+              </div>
+            </div>
+
+            <div style="margin-top:16px;color:var(--muted);font-size:13px;line-height:1.65">
+              Welcome — I monitor, investigate, and report security alerts across SIEM/EDR tooling.
+              I’m building a portfolio of practical SOC work: investigations, detections, and lab write-ups.
+            </div>
+          </div>
+
+          <div class="portrait">
+            <div class="portrait-card">
+              <div class="pfp">
+                <!-- Replace with your photo path -->
+                <!-- <img src="assets/me.jpg" alt="Ashwin portrait"> -->
+                <div class="small">Add your photo: <span style="color:var(--accent2)">assets/me.jpg</span></div>
+              </div>
+              <div class="small">Monochrome • high contrast • “terminal” vibe</div>
+            </div>
+          </div>
+
         </div>
-        <div class="title">ashwin@cyber-portfolio</div>
-        <div class="hint">~</div>
       </div>
-      <div class="meta">
-        <span class="pill">status: <span class="muted">open_to_work</span></span>
-        <span class="pill">mode: <span class="muted">cli</span></span>
-        <span class="pill">type <span class="kbd">help</span></span>
-      </div>
-    </div>
+    </section>
 
-    <div class="terminal">
-      <div class="screen" id="screen">
-        <pre class="banner" id="banner"></pre>
+    <!-- FEATURED PROJECT -->
+    <section class="frame" id="projects">
+      <div class="frame-inner">
+        <div class="section-title">Featured Project:</div>
 
-        <div class="output" id="output"></div>
+        <div class="featured">
+          <div class="featured-left">
+            <div>
+              <span class="badge">SOC</span>
+              <span class="badge">Detection</span>
+              <span class="badge">IR Notes</span>
+            </div>
 
-        <div class="promptrow">
-          <div class="prompt" id="prompt"></div>
-          <div class="cmd">
-            <input id="input" type="text" autocomplete="off" spellcheck="false" />
+            <div class="proj-name">Threat Triage & Investigation Pack</div>
+
+            <p class="proj-desc">
+              A recruiter-friendly bundle: investigation workflow, sample incident notes,
+              MITRE ATT&CK mapping, and “what I check first” playbooks for common alert types
+              (phishing, suspicious PowerShell, lateral movement, credential access).
+            </p>
+
+            <div class="btn-row">
+              <a class="btn" href="#" target="_blank" rel="noreferrer">Live Demo</a>
+              <a class="btn secondary" href="#" target="_blank" rel="noreferrer">Code</a>
+            </div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="num">Splunk</div>
+              <div class="label">Primary SIEM</div>
+            </div>
+            <div class="kpi">
+              <div class="num">EDR</div>
+              <div class="label">CrowdStrike / Defender</div>
+            </div>
+            <div class="kpi">
+              <div class="num">MITRE</div>
+              <div class="label">ATT&CK mapping</div>
+            </div>
+            <div class="kpi">
+              <div class="num">0</div>
+              <div class="label">BS claims 😄</div>
+            </div>
           </div>
         </div>
-        <div class="hint">Tip: <span class="kbd">↑</span>/<span class="kbd">↓</span> history · <span class="kbd">Tab</span> autocomplete · <span class="kbd">clear</span> to reset</div>
+
       </div>
-    </div>
+    </section>
+
+    <!-- BLOG -->
+    <section class="frame" id="blog">
+      <div class="blog-head">
+        <div class="frame-inner" style="margin-bottom:0">
+          <div class="section-title">Latest Blog Posts:</div>
+          <div style="color:var(--muted);font-size:13px;line-height:1.65">
+            Short, practical write-ups — detections, investigations, lessons learned, and lab notes.
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-grid">
+        <article class="card">
+          <div class="card-top">
+            <span class="tag">Analysis</span>
+            <span>5 minute read</span>
+          </div>
+          <h4>Hunting suspicious PowerShell in Windows logs</h4>
+          <p>My checklist: encoded commands, LOLBins, parent/child anomalies, and quick pivots in SIEM to confirm impact.</p>
+          <a href="#" target="_blank" rel="noreferrer">Read the blog</a>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <span class="tag">Security</span>
+            <span>3 minute read</span>
+          </div>
+          <h4>Common SOC mistakes in incident notes (and fixes)</h4>
+          <p>How to write crisp incident timelines, evidence references, and stakeholder-ready summaries without fluff.</p>
+          <a href="#" target="_blank" rel="noreferrer">Read the blog</a>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <span class="tag">Tutorial</span>
+            <span>8 minute read</span>
+          </div>
+          <h4>Building a mini detection lab in VMs (safe setup)</h4>
+          <p>Segmented network, snapshots, basic telemetry, and safe samples — enough to learn without being reckless.</p>
+          <a href="#" target="_blank" rel="noreferrer">Read the blog</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="frame" id="contact">
+      <div class="frame-inner">
+        <div class="section-title">Contact:</div>
+        <div style="color:var(--muted);font-size:13px;line-height:1.8">
+          Email: <span style="color:var(--accent2);font-weight:700">ashwinsri.no1@gmail.com.com</span><br>
+          LinkedIn: <a style="color:var(--accent2)" href="https://www.linkedin.com/in/ashwin-srinivamurthi" target="_blank" rel="noreferrer">/in/ashwin-srinivamurthi</a><br>
+          GitHub: <a style="color:var(--accent2)" href="https://github.com/Ashwin200217" target="_blank" rel="noreferrer">github.com/Ashwin200217</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© Ashwin | 2026</div>
+      <div><span class="ver">v1.00</span> • cli-theme</div>
+    </footer>
   </div>
-
-  <script>
-    // ====== Customize your content here ======
-    const PROFILE = {
-      name: "Ashwin",
-      role: "Cyber Security Analyst | SOC | MSc (UK)",
-      location: "Cambridge, UK",
-      email: "ashwinsri.no1@gmail.com",
-      links: {
-        linkedin: "https://www.linkedin.com/in/ashwin-srinivamurthi",
-        github: "https://github.com/Ashwin200217",
-        cv: "Ashwin_S_Resume.pdf"
-      },
-      summary: [
-        "SOC-focused cybersecurity professional with hands-on experience in SIEM/EDR monitoring, triage, and incident workflows.",
-        "Comfortable with Splunk, QRadar, Azure Sentinel, CrowdStrike Falcon, Windows Defender, Google Chronicle, and Cortex XSOAR.",
-        "Currently pursuing MSc in Cyber Security Management (UK)."
-      ],
-      skills: {
-        "SOC & IR": ["Alert triage", "Incident handling", "Log analysis", "MITRE ATT&CK mapping", "Use-case tuning (basic)"],
-        "SIEM/EDR": ["Splunk", "QRadar", "Azure Sentinel", "Stellar Cyber", "CrowdStrike Falcon", "Windows Defender"],
-        "SOAR": ["Google Chronicle SOAR", "Cortex XSOAR (platform experience)"],
-        "Cloud/Sec": ["Azure fundamentals (security monitoring)"],
-        "Web/AppSec": ["Burp Suite basics", "OWASP Top 10 awareness"],
-        "Scripting": ["Python basics", "Bash basics"]
-      },
-      experience: [
-        {
-          company: "EY",
-          title: "Senior Analyst (Cybersecurity / SOC)",
-          period: "Nov 2024 — Present",
-          bullets: [
-            "Monitor and triage alerts across SIEM/EDR tools; escalate and document incidents.",
-            "Coordinate reporting to stakeholders; maintain clear timelines and evidence trails.",
-            "Support detection operations with investigation notes and repeatable playbook steps."
-          ]
-        },
-        {
-          company: "EY",
-          title: "Project Consultant (Cybersecurity / SOC)",
-          period: "— Nov 2024",
-          bullets: [
-            "Handled security incidents and alert investigations; improved consistency in case notes.",
-            "Worked with client environments and operational handovers."
-          ]
-        }
-      ],
-      projects: [
-        {
-          name: "Stop the Breach (Lab Architecture)",
-          tags: ["Network Security", "AAA", "DMZ", "IDS/IPS"],
-          desc: "Multi-site security architecture lab design (AAA/DMZ/VLAN segmentation/firewall rules) for academic demonstration.",
-          links: [{label:"Notes", url:"#"}]
-        },
-        {
-          name: "AI-enabled SOC Research (UNSW-NB15)",
-          tags: ["ML", "Detection", "Random Forest"],
-          desc: "Explored ML approaches for intrusion detection using UNSW-NB15 with baseline feature engineering and evaluation.",
-          links: [{label:"Write-up", url:"#"}]
-        },
-        {
-          name: "Malware Analysis Report (Academic)",
-          tags: ["Malware", "TTPs", "Analysis"],
-          desc: "Structured analysis report focusing on behaviors, indicators, and mitigations (academic context).",
-          links: [{label:"Summary", url:"#"}]
-        }
-      ],
-      certs: [
-        "CompTIA Security+",
-        "EC-Council Certified Security Analyst (CSA)",
-        "Google Chronicle Certified SOAR Analyst"
-      ],
-      education: [
-        { school: "Anglia Ruskin University (ARU)", program: "MSc Cyber Security Management", period: "2025 — 2026" },
-        { school: "B.Tech", program: "Information Security", period: "2019 — 2023" }
-      ]
-    };
-
-    // ====== Terminal Engine ======
-    const bannerText = String.raw`
-      ░▒▓█▓▒░  CYBER PORTFOLIO TERMINAL  ░▒▓█▓▒░
-      user: ${PROFILE.name.toLowerCase()}   role: ${PROFILE.role}
-      node: ${PROFILE.location}   status: open_to_work
-      type: help   |   try: about, skills, experience, projects, certs, education, contact
-    `.trim();
-
-    const promptText = `${PROFILE.name.toLowerCase()}@portfolio:~$`;
-
-    const out = document.getElementById("output");
-    const input = document.getElementById("input");
-    const banner = document.getElementById("banner");
-    const prompt = document.getElementById("prompt");
-
-    banner.textContent = bannerText;
-    prompt.textContent = promptText;
-
-    const history = [];
-    let historyIndex = -1;
-
-    const commands = {};
-    const aliases = {
-      ls: "help",
-      whoami: "about",
-      mail: "contact",
-      cls: "clear",
-      exp: "experience",
-      proj: "projects",
-      edu: "education"
-    };
-
-    function esc(s){
-      return s.replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
-    }
-
-    function print(html){
-      const block = document.createElement("div");
-      block.innerHTML = html;
-      out.appendChild(block);
-      out.scrollTop = out.scrollHeight;
-    }
-
-    function hr(){
-      print(`<div class="dim">────────────────────────────────────────────────────────</div>`);
-    }
-
-    function listTable(title, items){
-      let rows = items.map(i => `- ${esc(i)}`).join("<br>");
-      print(`<div><span class="muted">${esc(title)}:</span><br>${rows}</div>`);
-    }
-
-    commands.help = () => {
-      hr();
-      print(`<div><span class="muted">commands</span></div>`);
-      print(`<div class="dim">
-        help, about, skills, experience, projects, certs, education, contact, links, theme, clear
-        <br>aliases: ls, whoami, mail, cls, exp, proj, edu
-      </div>`);
-      print(`<div class="dim">pro tips: Tab autocomplete · ↑/↓ history</div>`);
-      hr();
-    };
-
-    commands.about = () => {
-      hr();
-      print(`<div><span class="muted">${esc(PROFILE.name)}</span> — <span class="dim">${esc(PROFILE.role)}</span></div>`);
-      print(`<div class="dim">location: ${esc(PROFILE.location)}</div>`);
-      print(`<br>`);
-      print(PROFILE.summary.map(s => `• ${esc(s)}`).join("<br>"));
-      hr();
-    };
-
-    commands.skills = () => {
-      hr();
-      Object.entries(PROFILE.skills).forEach(([k,v]) => listTable(k, v));
-      hr();
-    };
-
-    commands.experience = () => {
-      hr();
-      PROFILE.experience.forEach(job => {
-        print(`<div><span class="muted">${esc(job.title)}</span> @ <span class="dim">${esc(job.company)}</span> <span class="dim">(${esc(job.period)})</span></div>`);
-        print(job.bullets.map(b => `• ${esc(b)}`).join("<br>"));
-        print(`<br>`);
-      });
-      hr();
-    };
-
-    commands.projects = () => {
-      hr();
-      PROFILE.projects.forEach(p => {
-        const tags = p.tags.map(t => `<span class="pill">${esc(t)}</span>`).join(" ");
-        const links = (p.links||[]).map(l => `<a href="${esc(l.url)}" target="_blank" rel="noreferrer">${esc(l.label)}</a>`).join(" · ");
-        print(`<div><span class="muted">${esc(p.name)}</span><div style="margin-top:6px">${tags}</div></div>`);
-        print(`<div class="dim" style="margin-top:6px">${esc(p.desc)}</div>`);
-        if(links) print(`<div style="margin-top:6px">${links}</div>`);
-        print(`<br>`);
-      });
-      hr();
-    };
-
-    commands.certs = () => {
-      hr();
-      listTable("certifications", PROFILE.certs);
-      hr();
-    };
-
-    commands.education = () => {
-      hr();
-      PROFILE.education.forEach(e => {
-        print(`<div><span class="muted">${esc(e.school)}</span> — <span class="dim">${esc(e.program)}</span> <span class="dim">(${esc(e.period)})</span></div>`);
-      });
-      hr();
-    };
-
-    commands.contact = () => {
-      hr();
-      print(`<div><span class="muted">email</span>: <a href="mailto:${esc(PROFILE.email)}">${esc(PROFILE.email)}</a></div>`);
-      print(`<div class="dim">Use links command for GitHub/LinkedIn/CV.</div>`);
-      hr();
-    };
-
-    commands.links = () => {
-      hr();
-      print(`<div>LinkedIn: <a href="${esc(PROFILE.links.linkedin)}" target="_blank" rel="noreferrer">${esc(PROFILE.links.linkedin)}</a></div>`);
-      print(`<div>GitHub: <a href="${esc(PROFILE.links.github)}" target="_blank" rel="noreferrer">${esc(PROFILE.links.github)}</a></div>`);
-      print(`<div>CV: <a href="${esc(PROFILE.links.cv)}" target="_blank" rel="noreferrer">${esc(PROFILE.links.cv)}</a> </div>`);
-      hr();
-    };
-
-    commands.theme = (arg) => {
-      // simple theme switch (green default, "blue" variant)
-      if((arg||"").toLowerCase() === "blue"){
-        document.documentElement.style.setProperty("--accent", "#7ee0ff");
-        document.documentElement.style.setProperty("--muted", "#98ecff");
-        print(`<div class="muted">theme set: blue</div>`);
-      } else {
-        document.documentElement.style.setProperty("--accent", "#39ff88");
-        document.documentElement.style.setProperty("--muted", "#7bdc95");
-        print(`<div class="muted">theme set: green</div>`);
-      }
-    };
-
-    commands.clear = () => { out.innerHTML = ""; };
-
-    function run(line){
-      const raw = line.trim();
-      if(!raw) return;
-
-      // echo prompt line
-      print(`<div><span class="muted">${esc(promptText)}</span> ${esc(raw)}</div>`);
-
-      const [cmd0, ...rest] = raw.split(/\s+/);
-      const cmd = (aliases[cmd0.toLowerCase()] || cmd0.toLowerCase());
-      const arg = rest.join(" ");
-
-      if(commands[cmd]){
-        commands[cmd](arg);
-      } else {
-        print(`<div class="danger">command not found:</div> <span class="warn">${esc(cmd0)}</span> <span class="dim">— try "help"</span>`);
-      }
-    }
-
-    const allCmds = () => Object.keys(commands).concat(Object.keys(aliases));
-
-    function autocomplete(){
-      const value = input.value.trim();
-      const [first, ...rest] = value.split(/\s+/);
-      if(rest.length) return; // autocomplete only first token
-      const matches = allCmds().filter(c => c.startsWith(first.toLowerCase()));
-      if(matches.length === 1){
-        input.value = matches[0] + " ";
-      } else if(matches.length > 1){
-        print(`<div class="dim">${matches.sort().join("  ")}</div>`);
-      }
-    }
-
-    input.addEventListener("keydown", (e) => {
-      if(e.key === "Enter"){
-        const v = input.value;
-        history.push(v);
-        historyIndex = history.length;
-        input.value = "";
-        run(v);
-      } else if(e.key === "ArrowUp"){
-        e.preventDefault();
-        if(history.length === 0) return;
-        historyIndex = Math.max(0, historyIndex - 1);
-        input.value = history[historyIndex] || "";
-      } else if(e.key === "ArrowDown"){
-        e.preventDefault();
-        if(history.length === 0) return;
-        historyIndex = Math.min(history.length, historyIndex + 1);
-        input.value = history[historyIndex] || "";
-      } else if(e.key === "Tab"){
-        e.preventDefault();
-        autocomplete();
-      }
-    });
-
-    // Boot message
-    (function boot(){
-      print(`<div class="dim">boot: initializing terminal...</div>`);
-      print(`<div class="dim">hint: type <span class="kbd">help</span></div>`);
-      commands.help();
-      input.focus();
-    })();
-
-    // focus on click anywhere
-    document.getElementById("screen").addEventListener("click", () => input.focus());
-  </script>
 </body>
 </html>
