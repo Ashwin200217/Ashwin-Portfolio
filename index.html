@@ -10,334 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#060b08;
-      --text:#d7ffe2;
-      --muted:#7feaa3;
-      --dim:#49b36c;
-      --accent:#25ff7a;
-      --accent2:#5fffd1;
-      --border:rgba(37,255,122,.35);
-      --border2:rgba(37,255,122,.18);
-      --shadow:0 18px 45px rgba(0,0,0,.55);
-      --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      --radius:18px;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--mono);
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 15% 0%, rgba(37,255,122,.12), transparent 60%),
-        radial-gradient(900px 600px at 90% 20%, rgba(95,255,209,.09), transparent 55%),
-        var(--bg);
-    }
-
-    .scanlines{
-      position:fixed; inset:0;
-      pointer-events:none;
-      background: repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,.03) 0px,
-          rgba(255,255,255,.03) 1px,
-          transparent 1px,
-          transparent 3px
-        );
-      opacity:.20;
-      mix-blend-mode:overlay;
-      z-index:1;
-    }
-    .vignette{
-      position:fixed; inset:0;
-      pointer-events:none;
-      background: radial-gradient(circle at 50% 10%, rgba(0,0,0,0), rgba(0,0,0,.55) 70%);
-      z-index:1;
-    }
-
-    .container{
-      position:relative;
-      z-index:2;
-      width:min(1200px, 100%);
-      margin:0 auto;
-      padding:16px 16px 28px;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding:14px 16px;
-      border:1px solid var(--border2);
-      border-radius:16px;
-      background:rgba(11,18,13,.75);
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(8px);
-    }
-    .prompt{
-      color:var(--accent);
-      font-weight:700;
-      letter-spacing:.2px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .prompt .caret{color:var(--accent2)}
-    nav{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
-    nav a{
-      color:var(--muted);
-      text-decoration:none;
-      padding:8px 10px;
-      border:1px solid transparent;
-      border-radius:12px;
-      font-weight:600;
-      font-size:13px;
-    }
-    nav a:hover{
-      border-color:var(--border2);
-      background:rgba(37,255,122,.06);
-      color:var(--accent2);
-    }
-    .status{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      color:var(--accent2);
-      font-size:13px;
-      white-space:nowrap;
-    }
-    .dot{
-      width:10px;height:10px;border-radius:50%;
-      background:var(--accent);
-      box-shadow: 0 0 14px rgba(37,255,122,.75);
-    }
-
-    .frame{
-      margin-top:16px;
-      border:1px solid var(--border2);
-      border-radius:var(--radius);
-      background:linear-gradient(180deg, rgba(11,18,13,.62), rgba(6,11,8,.80));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .frame-inner{
-      padding:22px;
-      border:1px solid var(--border);
-      margin:16px;
-      border-radius:16px;
-      position:relative;
-    }
-    .frame-inner:before{
-      content:"";
-      position:absolute; inset:-1px;
-      border-radius:16px;
-      background: radial-gradient(circle at 20% 0%, rgba(37,255,122,.10), transparent 55%);
-      pointer-events:none;
-      opacity:.9;
-    }
-
-    .hero{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:22px;
-      align-items:start;
-      position:relative;
-      z-index:2;
-    }
-
-    .ascii-box{
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:18px;
-      background:rgba(11,15,12,.60);
-    }
-    .ascii{
-      margin:0;
-      color:var(--accent);
-      font-weight:700;
-      letter-spacing:.5px;
-      line-height:1.05;
-      font-size:14px;
-      white-space:pre;
-    }
-    .subtitle{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .info{
-      margin-top:18px;
-      color:var(--muted);
-      font-size:14px;
-    }
-    .info h3{
-      margin:0 0 10px;
-      color:var(--accent2);
-      font-size:14px;
-      letter-spacing:.4px;
-    }
-    .info-grid{
-      display:grid;
-      grid-template-columns: 130px 1fr;
-      gap:8px 14px;
-      padding:14px;
-      border:1px solid var(--border2);
-      border-radius:14px;
-      background:rgba(6,11,8,.45);
-    }
-    .k{color:var(--dim)}
-    .v{color:var(--text)}
-
-    .portrait{
-      display:flex;
-      justify-content:center;
-    }
-    .portrait-card{
-      width:min(290px, 100%);
-      border:1px solid var(--border);
-      border-radius:16px;
-      background:rgba(6,11,8,.45);
-      padding:16px;
-      text-align:center;
-    }
-    .pfp{
-      width:200px;height:240px;
-      margin:0 auto;
-      border-radius:12px;
-      border:1px solid var(--border2);
-      background:
-        radial-gradient(circle at 35% 20%, rgba(37,255,122,.18), transparent 45%),
-        rgba(11,18,13,.65);
-      overflow:hidden;
-    }
-    .pfp img{
-      width:100%; height:100%;
-      object-fit:cover;
-      filter: grayscale(100%) contrast(115%) brightness(110%);
-      opacity:.92;
-    }
-
-    .section-title{
-      color:var(--accent2);
-      font-size:14px;
-      margin:0 0 12px;
-      letter-spacing:.4px;
-    }
-
-    .featured{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:18px;
-      align-items:stretch;
-    }
-    .featured-left{
-      border:1px solid var(--border2);
-      border-radius:16px;
-      padding:18px;
-      background:rgba(6,11,8,.45);
-    }
-    .badge{
-      display:inline-block;
-      padding:4px 8px;
-      border-radius:10px;
-      border:1px solid var(--border2);
-      background:rgba(37,255,122,.06);
-      color:var(--muted);
-      font-size:12px;
-      margin-right:8px;
-      font-weight:700;
-    }
-    .proj-name{
-      margin:10px 0 8px;
-      color:var(--accent);
-      font-size:22px;
-      font-weight:800;
-      letter-spacing:.2px;
-    }
-    .proj-desc{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.55;
-      margin:0;
-    }
-
-    .kpis{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    .kpi{
-      border:1px solid var(--border2);
-      border-radius:16px;
-      background:rgba(6,11,8,.45);
-      padding:18px;
-      text-align:center;
-    }
-    .kpi .num{
-      font-size:18px;
-      color:var(--accent2);
-      font-weight:800;
-    }
-    .kpi .label{
-      margin-top:8px;
-      color:var(--dim);
-      font-size:12px;
-      letter-spacing:.3px;
-    }
-
-    .list{
-      border:1px solid var(--border2);
-      border-radius:16px;
-      background:rgba(6,11,8,.45);
-      padding:16px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.8;
-    }
-    .list strong{color:var(--text)}
-
-    footer{
-      margin-top:16px;
-      border:1px solid var(--border2);
-      border-radius:16px;
-      background:rgba(11,18,13,.75);
-      padding:12px 14px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      color:var(--dim);
-      font-size:12px;
-    }
-    .ver{
-      color:var(--accent);
-      font-weight:800;
-    }
-
-    a.inline{
-      color:var(--accent2);
-      text-decoration:none;
-      border-bottom:1px dotted rgba(95,255,209,.55);
-    }
-    a.inline:hover{border-bottom-style:solid}
-
-    @media (max-width: 980px){
-      .hero{grid-template-columns:1fr}
-      .featured{grid-template-columns:1fr}
-      nav{display:none}
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -368,6 +41,7 @@
     <section class="frame" id="about">
       <div class="frame-inner">
         <div class="hero">
+
           <div>
             <div class="ascii-box">
 <pre class="ascii">
@@ -391,7 +65,7 @@
               </div>
             </div>
 
-            <div style="margin-top:16px;color:var(--muted);font-size:13px;line-height:1.65">
+            <div class="about-text">
               I monitor, investigate, and report security alerts across SIEM/EDR tooling.
               I’m building practical SOC work: investigations, detections, and lab write-ups.
             </div>
@@ -399,9 +73,11 @@
 
           <div class="portrait">
             <div class="portrait-card">
-              <div class="pfp">
-                <!-- Your GitHub repo image -->
-                <img src="images/Profile.jpg" alt="Ashwin profile photo">
+              <!-- Glitch wrapper uses CSS variable set by JS -->
+              <div class="pfp glitch" id="glitchPfp">
+                <!-- Try Profile.jpg first; JS will fallback to profile.jpg if needed -->
+                <img id="profileImg" src="images/profile.jpg" alt="Ashwin profile photo" />
+                <span class="glitch-scan"></span>
               </div>
             </div>
           </div>
@@ -486,5 +162,7 @@
     </footer>
 
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
